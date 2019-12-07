@@ -2,21 +2,22 @@ const express = require('express')
 const AdsService = require('./ads-service')
 const { requireAuth } = require('../middleware/basic_auth')
 
-const articlesRouter = express.Router()
+const adsRouter = express.Router()
 
 adsRouter
   .route('/')
-  .get((req,res,nex) => {
+  .get((req,res,next) => {
     AdsService.getAllAds(req.app.get('db'))
     .then(ad => { 
       console.log(ad)
-      res.json(ads.map(AdsService.serializeAd)) 
+      res.json(ad) 
     })
     .catch(next)
   })
 
-adRouter
-  .route('/:ad_id')
+
+adsRouter
+  .route('/:adId')
   .all(requireAuth)
   .all(checkAdExists)
   .get((req,res) => { 
@@ -27,12 +28,12 @@ adRouter
     try { 
       const ad = await AdService.getById(
         req.app.get('db'),
-        req.params.ad_id
+        req.params.adId
       )
       
       if(!ad)
         return res.status(404).json({ 
-          error: `Article doesn't exist`
+          error: `ad doesn't exist`
         })
       
       res.ad = ad 
@@ -41,4 +42,4 @@ adRouter
       next(error)
     }
   }
-module.exports = adRouter
+module.exports = adsRouter

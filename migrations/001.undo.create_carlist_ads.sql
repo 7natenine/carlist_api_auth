@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS create_carlist;
+DROP TABLE IF EXISTS carlist_ads;
