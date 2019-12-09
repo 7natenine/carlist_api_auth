@@ -3,36 +3,39 @@ const xss = require('xss')
 const AdsService = { 
   getAllAds(db){
     return db
-      .from('carlist_ads')
-      .select('*')
-
-      // .select( 
-      //   'ad.id',
-      //   'ad.make', 
-      //   'ad.model',
-      //   'ad.car_year',
-      //   'ad.mileage', 
-      //   'ad.content', 
-      //   db.raw(
-      //     `json_strip_nulls(
-      //       json_build_object(
-      //         'id',usr.id,
-      //         'username',usr.username, 
-      //         'full_name',usr.full_name, 
-      //         'phone',use.phone,
-      //         'email',usr.email,
-      //         'date_created',usr.date_created
-      //         'date_modified',usr.date_modified
-      //       )
-      //     ) AS "author"`
-      //   ),
-      // )
-      // .leftJoin( 
-      //   'carlist_users AS usr',
-      //   'ad.author_id', 
-      //   'usr.id',
-      // )
-      // .groupBy('ad.id','usr.id')
+      // .from('carlist_ads')
+      // .select('*')
+      .from('carlist_ads AS ad')
+      .select(
+        'ad.id',
+        'ad.make', 
+        'ad.model',
+        'ad.price',
+        'ad.car_year',
+        'ad.photos_link',
+        'ad.mileage', 
+        'ad.content', 
+        'ad.date_created',
+        db.raw(
+          `json_strip_nulls(
+            json_build_object(
+              'id',usr.id,
+              'username',usr.username, 
+              'full_name',usr.full_name, 
+              'phone',usr.phone,
+              'email',usr.email,
+              'date_created',usr.date_created,
+              'date_modified',usr.date_modified
+            )
+           ) AS "author"`
+        ),
+      )
+      .leftJoin( 
+        'carlist_users AS usr',
+        'ad.author_id', 
+        'usr.id',
+      )
+      .groupBy('ad.id','usr.id')
   },
 
   getById(db, id){
